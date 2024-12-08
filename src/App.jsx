@@ -1,7 +1,18 @@
+import Header from "./components/Header";
+import JobCard from "./components/JobCard";
+import Navbar from "./components/NavBar";
+import Searchbar from "./components/Searchbar";
+import dummyData from "./dummyData";
+
 function App() {
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <Navbar />
+      <Header />
+      <Searchbar />
+      {dummyData.map((job) => (
+        <JobCard key={job.id} {...job} />
+      ))}
     </>
   );
 }

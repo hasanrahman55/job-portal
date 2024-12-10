@@ -1,8 +1,14 @@
 import dayjs from "dayjs";
 
 function JobCard(props) {
+  // Ensure props.postedOn is valid
+  const postedOn = dayjs(props.postedOn?.toDate?.() || props.postedOn);
+
   const currentDate = dayjs(Date.now());
-  const diffInDays = currentDate.diff(props.postedOn, "day");
+  const diffInDays = currentDate.diff(postedOn, "day");
+
+  console.log(diffInDays);
+
   return (
     <div className="mx-40 mb-4">
       <div className="flex justify-between items-center px-6 py-4 bg-zinc-200 rounded-md border border-black shadow-lg hover:border-blue-500 hover:translate-y-1 hover:scale-103">

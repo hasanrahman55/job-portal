@@ -4,19 +4,22 @@ import JobCard from "./components/JobCard";
 import Navbar from "./components/NavBar";
 import Searchbar from "./components/Searchbar";
 import { db } from "./firebase.config";
-import { collection, query, getDocs } from "firebase/firestore";
+import { collection, query, getDocs, orderBy } from "firebase/firestore";
 
 function App() {
   const [jobs, setJobs] = useState([]);
 
   const fetchJobsData = async () => {
+    const tempJobs = [];
     const jobsData = query(collection(db, "jobs"));
-    const quarySnapshot = await getDocs(jobsData);
+    const quaryOrder = query(jobsData, orderBy("postedOn", "desc"));
+    const quarySnapshot = await getDocs(quaryOrder);
     quarySnapshot.forEach((doc) => {
       console.log(doc.data());
-
-      setJobs([...jobs, { id: doc.id, ...doc.data() }]);
+      tempJobs.push({ ...doc.data(), id: doc.id });
     });
+
+    setJobs(tempJobs);
   };
 
   useEffect(() => {

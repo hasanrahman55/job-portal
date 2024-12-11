@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function Searchbar() {
+function Searchbar(props) {
   const [jobCriteria, setJobCriteria] = useState({
     title: "",
     location: "",
@@ -8,13 +8,20 @@ function Searchbar() {
     type: "",
   });
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setJobCriteria({ ...jobCriteria, [name]: value });
-  }
+  // function handleChange(e) {
+  //   const { name, value } = e.target;
+  //   setJobCriteria((prev) => ({ ...prev, [name]: value }));
+  // }
 
-  const search = () => {
-    console.log(jobCriteria);
+  const handleChange = (e) => {
+    setJobCriteria((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const search = async () => {
+    await props.fetchJobsCustom(jobCriteria);
   };
   return (
     <div className="flex gap-4 my-10 justify-center px-10">

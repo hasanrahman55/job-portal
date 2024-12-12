@@ -28,30 +28,31 @@ function App() {
     setJobs(tempJobs);
   };
 
+  // Fetch jobs with custom filters applied
   const fetchJobsCustom = async (jobCriteria) => {
-    setCustomSearch(true);
-    const tempJobs = [];
-    const jobsRef = query(collection(db, "jobs"));
+    try {
+      setCustomSearch(true);
 
-    const q = query(
-      jobsRef,
-      where("type", "==", jobCriteria.type),
-      where("title", "==", jobCriteria.title),
-      where("experience", "==", jobCriteria.experience),
-      where("location", "==", jobCriteria.location),
-      orderBy("postedOn", "desc")
-    );
-    const req = await getDocs(q);
+      // Fetch all jobs
+      const req = await getDocs(collection(db, "jobs"));
+      const tempJobs = req.docs
+        .map((job) => ({
+          ...job.data(),
+          id: job.id,
+          postedOn: job.data().postedOn.toDate(),
+        }))
+        .filter(
+          (job) =>
+            (!jobCriteria.type || job.type === jobCriteria.type) &&
+            (!jobCriteria.title || job.title === jobCriteria.title) &&
+            (!jobCriteria.experience || job.experience === jobCriteria.experience) &&
+            (!jobCriteria.location || job.location === jobCriteria.location)
+        );
 
-    req.forEach((job) => {
-      console.log(job.data());
-      tempJobs.push({
-        ...job.data(),
-        id: job.id,
-        postedOn: job.data().postedOn.toDate(),
-      });
-    });
-    setJobs(tempJobs);
+      setJobs(tempJobs);
+    } catch (error) {
+      console.error("Error applying custom filters:", error);
+    }
   };
 
   useEffect(() => {

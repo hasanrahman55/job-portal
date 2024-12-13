@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import JobCard from "./components/JobCard";
-import Navbar from "./components/NavBar";
 import Searchbar from "./components/Searchbar";
 import { db } from "./firebase.config";
 import { collection, query, getDocs, orderBy, where } from "firebase/firestore";
@@ -45,7 +44,8 @@ function App() {
           (job) =>
             (!jobCriteria.type || job.type === jobCriteria.type) &&
             (!jobCriteria.title || job.title === jobCriteria.title) &&
-            (!jobCriteria.experience || job.experience === jobCriteria.experience) &&
+            (!jobCriteria.experience ||
+              job.experience === jobCriteria.experience) &&
             (!jobCriteria.location || job.location === jobCriteria.location)
         );
 
@@ -61,7 +61,6 @@ function App() {
 
   return (
     <div>
-      <Navbar />
       <Header />
       <Searchbar fetchJobsCustom={fetchJobsCustom} />
       {customSearch && (

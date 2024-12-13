@@ -24,7 +24,7 @@ function Searchbar(props) {
     await props.fetchJobsCustom(jobCriteria);
   };
   return (
-    <div className="flex gap-4 my-10 justify-center px-10">
+    <div className="flex flex-wrap gap-4 my-10 justify-center px-10">
       <select
         onChange={handleChange}
         name="title"
